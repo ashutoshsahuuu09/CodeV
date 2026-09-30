@@ -1,0 +1,12 @@
+﻿{
+  "name": "CodeV-ai",
+  "version": "1.0.0",
+  "description": "CodeV - AI-powered Developer Knowledge Platform",
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:backend": "python -m uvicorn app.main:app --app-dir backend --reload --port 8000",
+    "build": "npm --prefix frontend run build",
+    "test:backend": "pytest backend/tests/test_backend.py -v"
+  }
+}

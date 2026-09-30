@@ -1,0 +1,83 @@
+version: '3.8'
+
+services:
+  # ---------------------------------------------------------------------------
+  # MongoDB — Primary Data Store
+  # WiredTiger engine with snappy compression configured at the application layer.
+  # ---------------------------------------------------------------------------
+  mongodb:
+    image: mongo:7.0
+    container_name: codev-mongodb
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: ${MONGODB_DB_NAME:-codev_db}
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongodb_data:/data/db
+    command: >
+      mongod
+      --wiredTigerCacheSizeGB 0.5
+      --setParameter diagnosticDataCollectionEnabled=false
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ---------------------------------------------------------------------------
+  # PostgreSQL (Optional — for pgvector if enabled)
+  # ---------------------------------------------------------------------------
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: codev-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-codev}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: codev-backend
+    restart: always
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    environment:
+      - MONGODB_URL=mongodb://mongodb:27017
+      - MONGODB_DB_NAME=${MONGODB_DB_NAME:-codev}
+      - SECRET_KEY=${SECRET_KEY:-codev_super_secret_jwt_signing_key_change_in_production_987654321}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - ENVIRONMENT=production
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/storage:/app/storage
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: codev-frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+
+volumes:
+  mongodb_data:
+  postgres_data:
