@@ -8,8 +8,7 @@ import {
   BookOpen,
   Terminal,
   Cpu,
-  Layers,
-  Code2
+  Layers
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../services/api';
@@ -26,10 +25,10 @@ export const DocumentationPage: React.FC = () => {
 
   const docTypes = [
     { id: 'readme', label: 'README.md', icon: FileText, desc: 'Complete repository README with setup and architecture overview.' },
-    { id: 'api_docs', label: 'API Reference', icon: Terminal, desc: 'REST endpoint specification with schemas and parameters.' },
-    { id: 'architecture', label: 'Architecture Guide', icon: Cpu, desc: 'System design, subsystem boundaries, and Mermaid topology.' },
-    { id: 'onboarding', label: 'Developer Onboarding', icon: BookOpen, desc: 'Quickstart guide for new engineers joining the team.' },
-    { id: 'module', label: 'Module Breakdown', icon: Layers, desc: 'In-depth documentation of core service modules.' },
+    { id: 'api_docs', label: 'API reference', icon: Terminal, desc: 'REST endpoint specification with schemas and parameters.' },
+    { id: 'architecture', label: 'Architecture guide', icon: Cpu, desc: 'System design, subsystem boundaries, and Mermaid topology.' },
+    { id: 'onboarding', label: 'Developer onboarding', icon: BookOpen, desc: 'Quickstart guide for new engineers joining the team.' },
+    { id: 'module', label: 'Module breakdown', icon: Layers, desc: 'In-depth documentation of core service modules.' },
   ];
 
   useEffect(() => {
@@ -40,7 +39,6 @@ export const DocumentationPage: React.FC = () => {
         if (match) {
           setCurrentDoc(match);
         } else {
-          // Auto generate if none exists yet
           handleGenerate(selectedDocType);
         }
       }).catch(console.error);
@@ -59,7 +57,6 @@ export const DocumentationPage: React.FC = () => {
         custom_instructions: customInstructions || undefined,
       });
       setCurrentDoc(doc);
-      // update list
       const allDocs = await api.getRepositoryDocs(selectedRepo.id);
       setSavedDocs(allDocs);
     } catch (err) {
@@ -89,15 +86,15 @@ export const DocumentationPage: React.FC = () => {
   };
 
   return (
-    <div className="p-8 max-w-7xl mx-auto space-y-8 animate-in fade-in duration-200">
+    <div className="p-8 max-w-7xl mx-auto space-y-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-black text-white tracking-tight flex items-center gap-2">
-            <FileText className="w-6 h-6 text-cyan-400" />
-            <span>Documentation Generator</span>
+          <h1 className="text-xl font-semibold text-fg tracking-tight flex items-center gap-2">
+            <FileText className="w-5 h-5 text-accent" />
+            <span>Documentation generator</span>
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-fg-muted mt-1">
             Automated production documentation generated from AST parsed source code.
           </p>
         </div>
@@ -106,14 +103,14 @@ export const DocumentationPage: React.FC = () => {
           <div className="flex items-center gap-2">
             <button
               onClick={handleCopy}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-800 hover:bg-slate-800 text-slate-300 text-xs font-semibold transition-colors"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-md bg-surface border border-edge hover:border-edge-2 text-fg-muted hover:text-fg text-xs font-semibold transition-colors"
             >
-              {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
-              <span>{copied ? 'Copied' : 'Copy Markdown'}</span>
+              {copied ? <Check className="w-4 h-4 text-success" /> : <Copy className="w-4 h-4" />}
+              <span>{copied ? 'Copied' : 'Copy markdown'}</span>
             </button>
             <button
               onClick={handleDownload}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-bold shadow-md shadow-cyan-500/20 transition-all"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-md bg-accent hover:bg-accent-strong text-accent-fg text-xs font-semibold transition-colors"
             >
               <Download className="w-4 h-4" />
               <span>Download .md</span>
@@ -131,15 +128,15 @@ export const DocumentationPage: React.FC = () => {
             <button
               key={dt.id}
               onClick={() => setSelectedDocType(dt.id)}
-              className={`p-3.5 rounded-xl border text-left transition-all ${
+              className={`p-3.5 rounded-lg border text-left transition-colors ${
                 isActive
-                  ? 'bg-cyan-500/15 border-cyan-500/40 text-cyan-300 shadow-lg shadow-cyan-500/10'
-                  : 'bg-slate-900/60 border-slate-800 hover:border-slate-700 text-slate-400 hover:text-slate-200'
+                  ? 'bg-accent-soft border-accent-soft-edge text-accent'
+                  : 'bg-surface border-edge hover:border-edge-2 text-fg-muted hover:text-fg'
               }`}
             >
-              <Icon className="w-4 h-4 mb-2 text-cyan-400" />
-              <p className="text-xs font-bold text-slate-100">{dt.label}</p>
-              <p className="text-[10px] text-slate-400 line-clamp-1 mt-0.5">{dt.desc}</p>
+              <Icon className="w-4 h-4 mb-2 text-accent" />
+              <p className="text-xs font-semibold text-fg">{dt.label}</p>
+              <p className="text-[10px] text-fg-subtle line-clamp-1 mt-0.5">{dt.desc}</p>
             </button>
           );
         })}
@@ -149,42 +146,42 @@ export const DocumentationPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Side: Generator Controls */}
         <div className="lg:col-span-4 space-y-4">
-          <div className="glass-panel p-5 rounded-2xl border border-slate-800 space-y-4">
-            <h3 className="text-xs font-bold text-slate-200 uppercase tracking-wider flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-cyan-400" />
-              <span>Generation Settings</span>
+          <div className="bg-surface p-5 rounded-lg border border-edge space-y-4">
+            <h3 className="text-xs font-semibold text-fg flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-accent" />
+              <span>Generation settings</span>
             </h3>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-400 mb-1.5">
-                Custom Instructions (Optional)
+              <label className="block text-xs font-medium text-fg-subtle mb-1.5">
+                Custom instructions (optional)
               </label>
               <textarea
                 rows={4}
                 value={customInstructions}
                 onChange={(e) => setCustomInstructions(e.target.value)}
-                placeholder="e.g. Highlight PostgreSQL migration steps and Stripe test credentials format..."
-                className="w-full p-2.5 rounded-lg bg-slate-950 border border-slate-800 text-slate-200 text-xs focus:outline-none focus:border-cyan-500 resize-none"
+                placeholder="e.g. Highlight PostgreSQL migration steps and Stripe test credentials format…"
+                className="w-full p-2.5 rounded-md bg-bg border border-edge text-fg text-xs focus:outline-none focus:border-accent resize-none"
               />
             </div>
 
             <button
               onClick={() => handleGenerate()}
               disabled={loading || !selectedRepo}
-              className="w-full py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs shadow-lg shadow-cyan-500/20 disabled:opacity-50 transition-all flex items-center justify-center gap-2"
+              className="w-full py-2.5 rounded-md bg-accent hover:bg-accent-strong text-accent-fg font-semibold text-xs disabled:opacity-50 transition-colors flex items-center justify-center gap-2"
             >
               {loading ? (
-                <span>Generating {selectedDocType}...</span>
+                <span>Generating {selectedDocType}…</span>
               ) : (
                 <>
                   <Sparkles className="w-4 h-4" />
-                  <span>Regenerate Document</span>
+                  <span>Regenerate document</span>
                 </>
               )}
             </button>
 
             {currentDoc && (
-              <div className="pt-3 border-t border-slate-800/80 text-[11px] text-slate-500 flex justify-between">
+              <div className="pt-3 border-t border-edge text-[11px] text-fg-subtle flex justify-between">
                 <span>Version: v{currentDoc.version}</span>
                 <span>Updated: {new Date(currentDoc.updated_at).toLocaleTimeString()}</span>
               </div>
@@ -194,27 +191,27 @@ export const DocumentationPage: React.FC = () => {
 
         {/* Right Side: Markdown Viewer */}
         <div className="lg:col-span-8">
-          <div className="glass-panel rounded-2xl border border-slate-800 overflow-hidden flex flex-col min-h-[550px]">
-            <div className="h-12 px-6 border-b border-slate-800 bg-slate-900/60 flex items-center justify-between">
-              <span className="font-mono text-xs font-bold text-slate-200">
-                {currentDoc ? currentDoc.title : 'Document Preview'}
+          <div className="bg-surface rounded-lg border border-edge overflow-hidden flex flex-col min-h-[550px]">
+            <div className="h-12 px-6 border-b border-edge bg-bg-2 flex items-center justify-between">
+              <span className="font-mono text-xs font-semibold text-fg">
+                {currentDoc ? currentDoc.title : 'Document preview'}
               </span>
-              <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-slate-800 text-cyan-400 border border-slate-700">
+              <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-surface text-accent border border-edge">
                 Markdown
               </span>
             </div>
 
-            <div className="flex-1 p-6 bg-slate-950/60 overflow-y-auto font-mono text-xs text-slate-200 leading-relaxed select-text whitespace-pre-wrap">
+            <div className="flex-1 p-6 bg-bg overflow-y-auto font-mono text-xs text-fg leading-relaxed select-text whitespace-pre-wrap">
               {loading ? (
-                <div className="h-full flex flex-col items-center justify-center gap-3 text-slate-400 py-20">
-                  <div className="w-8 h-8 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin" />
-                  <span>Synthesizing repository documentation...</span>
+                <div className="h-full flex flex-col items-center justify-center gap-3 text-fg-muted py-20">
+                  <div className="w-6 h-6 border-2 border-accent border-t-transparent rounded-full animate-spin" />
+                  <span>Synthesizing repository documentation…</span>
                 </div>
               ) : currentDoc ? (
                 currentDoc.content
               ) : (
-                <div className="py-20 text-center text-slate-500">
-                  No document generated yet. Click Generate above.
+                <div className="py-20 text-center text-fg-subtle">
+                  No document generated yet. Click generate above.
                 </div>
               )}
             </div>
