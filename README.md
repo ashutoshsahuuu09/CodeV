@@ -4,6 +4,26 @@
 
 ---
 
+## 📸 Screenshots
+
+| Dashboard (dark) | Dashboard (light) |
+| :---: | :---: |
+| ![Dashboard dark mode](docs/screenshots/dashboard-dark.jpg) | ![Dashboard light mode](docs/screenshots/dashboard-light.jpg) |
+
+| AI Chat with source citations | Code Viewer (clickable citation) |
+| :---: | :---: |
+| ![AI chat](docs/screenshots/ai-chat.jpg) | ![Code viewer modal](docs/screenshots/code-viewer.jpg) |
+
+| Semantic Code Search | Architecture Overview |
+| :---: | :---: |
+| ![Semantic code search](docs/screenshots/code-search.jpg) | ![Architecture overview](docs/screenshots/architecture.jpg) |
+
+| Connected Repositories |
+| :---: |
+| ![Repositories page](docs/screenshots/repositories.jpg) |
+
+---
+
 ## 🌟 Product Vision
 
 Modern engineering teams spend up to **30% of their time** reading code to understand:
