@@ -1,83 +1,157 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --bg: #F6F5F1;
+  --bg-2: #EEEDE5;
+  --surface: #FFFFFF;
+  --surface-2: #FBFAF6;
+  --edge: #E1DFD5;
+  --edge-2: #CFCCBE;
+  --fg: #23241F;
+  --fg-muted: #5C5B52;
+  --fg-subtle: #8A887C;
+
+  --accent: #3E6B52;
+  --accent-strong: #2E5240;
+  --accent-fg: #F6F5F1;
+  --accent-soft: #E3EBE4;
+  --accent-soft-edge: #C4D6C8;
+
+  --mark: #C99A3E;
+  --mark-soft: #F6E9CD;
+  --mark-fg: #4A3814;
+
+  --success: #3E6B52;
+  --success-soft: #E3EBE4;
+  --warning: #A66A1E;
+  --warning-soft: #F6E9CD;
+  --danger: #A8402A;
+  --danger-soft: #F7E3DD;
+
+  --shadow-color: 35 30% 15%;
+}
+
+.dark {
+  --bg: #15171B;
+  --bg-2: #1B1D22;
+  --surface: #1E2025;
+  --surface-2: #262930;
+  --edge: #30333B;
+  --edge-2: #3D4049;
+  --fg: #E9E8E2;
+  --fg-muted: #A5A39A;
+  --fg-subtle: #6F6D65;
+
+  --accent: #7FB294;
+  --accent-strong: #99C7AB;
+  --accent-fg: #11201A;
+  --accent-soft: #1E2B24;
+  --accent-soft-edge: #2D4238;
+
+  --mark: #D9AE5E;
+  --mark-soft: #362C17;
+  --mark-fg: #F2DDA9;
+
+  --success: #7FB294;
+  --success-soft: #1E2B24;
+  --warning: #D2A054;
+  --warning-soft: #362C17;
+  --danger: #D98066;
+  --danger-soft: #3A241D;
+
+  --shadow-color: 0 0% 0%;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-2: var(--bg-2);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-edge: var(--edge);
+  --color-edge-2: var(--edge-2);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-soft-edge: var(--accent-soft-edge);
+
+  --color-mark: var(--mark);
+  --color-mark-soft: var(--mark-soft);
+  --color-mark-fg: var(--mark-fg);
+
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+
+  --font-sans: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  --radius-sm: 5px;
+  --radius-md: 8px;
+  --radius-lg: 11px;
+  --radius-xl: 14px;
+}
+
 @layer base {
-  :root {
-    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
+  * {
+    border-color: var(--edge);
   }
 
   body {
     font-family: var(--font-sans);
-    background-color: #030712;
-    color: #f3f4f6;
+    background-color: var(--bg);
+    color: var(--fg);
   }
 
   code, pre, .font-mono {
     font-family: var(--font-mono);
   }
+
+  ::selection {
+    background-color: color-mix(in srgb, var(--accent) 30%, transparent);
+  }
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.6);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(51, 65, 85, 0.8);
+  background: var(--edge-2);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(100, 116, 139, 1);
+  background: var(--fg-subtle);
 }
 
-/* Glassmorphism & Glow Effects */
-.glass-panel {
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+/* Card surface — flat, bordered, no blur/glow */
+.surface-card {
+  background: var(--surface);
+  border: 1px solid var(--edge);
 }
 
-.glass-panel-interactive {
-  background: rgba(15, 23, 42, 0.6);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  transition: all 0.2s ease-in-out;
-}
-
-.glass-panel-interactive:hover {
-  background: rgba(30, 41, 59, 0.7);
-  border-color: rgba(56, 189, 248, 0.3);
-  transform: translateY(-1px);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 0 15px 0 rgba(56, 189, 248, 0.1);
-}
-
-/* Glowing Border effect */
-.glow-cyan {
-  box-shadow: 0 0 20px -3px rgba(6, 182, 212, 0.25);
-}
-
-.glow-blue {
-  box-shadow: 0 0 20px -3px rgba(59, 130, 246, 0.25);
-}
-
-/* Code Highlighting custom styling */
-.code-viewer-line {
-  display: flex;
-  line-height: 1.6;
-}
-
+/* Code viewer citation highlight — the one deliberate "highlighter" accent */
 .code-viewer-line.highlighted {
-  background-color: rgba(56, 189, 248, 0.15);
-  border-left: 3px solid #38bdf8;
+  background-color: var(--mark-soft);
+  border-left: 3px solid var(--mark);
 }
 
-/* Pulse animation for active indexing */
 @keyframes pulse-ring {
   0% {
     transform: scale(0.95);
@@ -95,4 +169,12 @@
 
 .animate-pulse-ring {
   animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
