@@ -3,11 +3,7 @@ import {
   Search,
   Filter,
   FileCode,
-  ExternalLink,
-  Code2,
-  Sparkles,
-  Layers,
-  ArrowRight
+  ExternalLink
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../services/api';
@@ -66,22 +62,22 @@ export const SearchPage: React.FC = () => {
   ];
 
   return (
-    <div className="p-8 max-w-6xl mx-auto space-y-8 animate-in fade-in duration-200">
+    <div className="p-8 max-w-6xl mx-auto space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-black text-white tracking-tight flex items-center gap-2">
-          <Search className="w-6 h-6 text-cyan-400" />
-          <span>Semantic Code Search</span>
+        <h1 className="text-xl font-semibold text-fg tracking-tight flex items-center gap-2">
+          <Search className="w-5 h-5 text-accent" />
+          <span>Semantic code search</span>
         </h1>
-        <p className="text-xs text-slate-400 mt-1">
+        <p className="text-xs text-fg-muted mt-1">
           Search your codebase by concepts, logic, and intent — not just exact keyword matches.
         </p>
       </div>
 
       {/* Search Bar & Filters */}
-      <form onSubmit={handleSearch} className="glass-panel p-5 rounded-2xl border border-slate-800 space-y-4">
-        <div className="flex items-center gap-3 bg-slate-950 border border-slate-800 focus-within:border-cyan-500/50 rounded-xl p-2 transition-all">
-          <Search className="w-5 h-5 text-slate-400 ml-2 shrink-0" />
+      <form onSubmit={handleSearch} className="bg-surface p-5 rounded-lg border border-edge space-y-4">
+        <div className="flex items-center gap-3 bg-bg border border-edge focus-within:border-accent rounded-md p-2 transition-colors">
+          <Search className="w-4 h-4 text-fg-subtle ml-2 shrink-0" />
           <input
             type="text"
             value={query}
@@ -89,25 +85,25 @@ export const SearchPage: React.FC = () => {
             disabled={!selectedRepo}
             placeholder={
               selectedRepo
-                ? `Search ${selectedRepo.name} concepts (e.g. "payment failure handling", "jwt verification")...`
-                : 'Please select a repository first...'
+                ? `Search ${selectedRepo.name} concepts (e.g. "payment failure handling", "jwt verification")…`
+                : 'Please select a repository first…'
             }
-            className="flex-1 bg-transparent px-2 py-1 text-xs text-slate-100 placeholder-slate-500 focus:outline-none"
+            className="flex-1 bg-transparent px-2 py-1 text-xs text-fg placeholder-fg-subtle focus:outline-none"
           />
           <button
             type="submit"
             disabled={!query.trim() || !selectedRepo || loading}
-            className="px-4 py-2 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs shadow-md shadow-cyan-500/20 disabled:opacity-40 transition-all shrink-0"
+            className="px-4 py-2 rounded-md bg-accent hover:bg-accent-strong text-accent-fg font-semibold text-xs disabled:opacity-40 transition-colors shrink-0"
           >
-            {loading ? 'Searching...' : 'Search'}
+            {loading ? 'Searching…' : 'Search'}
           </button>
         </div>
 
         {/* Filters Row */}
-        <div className="flex flex-wrap items-center gap-4 text-xs">
+        <div className="flex flex-wrap items-center gap-3 text-xs">
           <div className="flex items-center gap-2">
-            <Filter className="w-3.5 h-3.5 text-slate-400" />
-            <span className="text-slate-400 font-semibold">Filters:</span>
+            <Filter className="w-3.5 h-3.5 text-fg-subtle" />
+            <span className="text-fg-subtle font-medium">Filters:</span>
           </div>
 
           <input
@@ -115,7 +111,7 @@ export const SearchPage: React.FC = () => {
             value={languageFilter}
             onChange={(e) => setLanguageFilter(e.target.value)}
             placeholder="Language (e.g. Python, TypeScript)"
-            className="px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-800 text-slate-200 text-xs placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+            className="px-3 py-1.5 rounded-md bg-bg border border-edge text-fg text-xs placeholder-fg-subtle focus:outline-none focus:border-accent"
           />
 
           <input
@@ -123,20 +119,19 @@ export const SearchPage: React.FC = () => {
             value={pathFilter}
             onChange={(e) => setPathFilter(e.target.value)}
             placeholder="Path filter (e.g. api/, services/)"
-            className="px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-800 text-slate-200 text-xs placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+            className="px-3 py-1.5 rounded-md bg-bg border border-edge text-fg text-xs placeholder-fg-subtle focus:outline-none focus:border-accent"
           />
         </div>
 
         {/* Quick sample pills */}
-        <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-800/60">
-          <span className="text-[11px] text-slate-500">Popular queries:</span>
+        <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-edge">
+          <span className="text-[11px] text-fg-subtle">Popular queries:</span>
           {sampleSearches.map((s, idx) => (
             <button
               key={idx}
               type="button"
               onClick={() => {
                 setQuery(s);
-                // trigger search
                 if (selectedRepo) {
                   api.searchCode({ repository_id: selectedRepo.id, query: s }).then((res) => {
                     setResults(res.results);
@@ -144,7 +139,7 @@ export const SearchPage: React.FC = () => {
                   });
                 }
               }}
-              className="text-[11px] font-mono px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-cyan-300 border border-slate-800 transition-colors"
+              className="text-[11px] font-mono px-2.5 py-1 rounded-md bg-bg-2 hover:bg-surface-2 text-fg-muted hover:text-fg border border-edge transition-colors"
             >
               {s}
             </button>
@@ -155,36 +150,36 @@ export const SearchPage: React.FC = () => {
       {/* Results List */}
       <div className="space-y-4">
         {loading ? (
-          <div className="glass-panel p-12 rounded-2xl border border-slate-800 text-center space-y-3">
-            <div className="w-8 h-8 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin mx-auto" />
-            <p className="text-xs text-slate-400">Computing hybrid dense embeddings and scanning chunks...</p>
+          <div className="bg-surface p-12 rounded-lg border border-edge text-center space-y-3">
+            <div className="w-6 h-6 border-2 border-accent border-t-transparent rounded-full animate-spin mx-auto" />
+            <p className="text-xs text-fg-muted">Computing hybrid dense embeddings and scanning chunks…</p>
           </div>
         ) : hasSearched && results.length === 0 ? (
-          <div className="glass-panel p-12 rounded-2xl border border-slate-800 text-center space-y-2">
-            <p className="text-sm font-bold text-white">No Matching Code Chunks Found</p>
-            <p className="text-xs text-slate-400">Try broadening your search query or removing path filters.</p>
+          <div className="bg-surface p-12 rounded-lg border border-edge text-center space-y-2">
+            <p className="text-sm font-semibold text-fg">No matching code chunks found</p>
+            <p className="text-xs text-fg-muted">Try broadening your search query or removing path filters.</p>
           </div>
         ) : results.length > 0 ? (
           <div className="space-y-4">
-            <div className="flex items-center justify-between text-xs text-slate-400 px-1">
+            <div className="flex items-center justify-between text-xs text-fg-subtle px-1">
               <span>Showing {results.length} ranked results</span>
-              <span>Sorted by Semantic Relevance</span>
+              <span>Sorted by semantic relevance</span>
             </div>
 
             {results.map((item) => (
               <div
                 key={item.chunk_id}
                 onClick={() => openCodeViewer(item)}
-                className="glass-panel rounded-xl p-5 border border-slate-800 hover:border-cyan-500/40 hover:bg-slate-900/80 cursor-pointer transition-all duration-150 space-y-3"
+                className="bg-surface rounded-lg p-5 border border-edge hover:border-edge-2 cursor-pointer transition-colors space-y-3"
               >
                 {/* Header */}
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between flex-wrap gap-2">
                   <div className="flex items-center gap-2 font-mono text-xs">
-                    <FileCode className="w-4 h-4 text-cyan-400" />
-                    <span className="font-bold text-slate-100">{item.file_path}</span>
-                    <span className="text-slate-500">:{item.start_line}–{item.end_line}</span>
+                    <FileCode className="w-4 h-4 text-accent" />
+                    <span className="font-semibold text-fg">{item.file_path}</span>
+                    <span className="text-fg-subtle">:{item.start_line}–{item.end_line}</span>
                     {item.symbol_name && (
-                      <span className="px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 text-[10px] border border-cyan-800/40">
+                      <span className="px-2 py-0.5 rounded bg-accent-soft text-accent text-[10px] border border-accent-soft-edge">
                         {item.symbol_type}: {item.symbol_name}
                       </span>
                     )}
@@ -192,17 +187,17 @@ export const SearchPage: React.FC = () => {
 
                   <div className="flex items-center gap-3">
                     <div className="flex items-center gap-1.5 text-xs font-mono">
-                      <span className="text-[10px] text-slate-400">Match:</span>
-                      <span className="font-bold text-emerald-400">
+                      <span className="text-[10px] text-fg-subtle">Match:</span>
+                      <span className="font-semibold text-success">
                         {(item.relevance_score * 100).toFixed(0)}%
                       </span>
                     </div>
-                    <ExternalLink className="w-3.5 h-3.5 text-slate-500" />
+                    <ExternalLink className="w-3.5 h-3.5 text-fg-subtle" />
                   </div>
                 </div>
 
                 {/* Code Snippet Box */}
-                <pre className="bg-slate-950 p-3 rounded-lg border border-slate-800/80 font-mono text-xs text-slate-300 overflow-x-auto leading-relaxed">
+                <pre className="bg-bg p-3 rounded-md border border-edge font-mono text-xs text-fg-muted overflow-x-auto leading-relaxed">
                   {item.code_snippet}
                 </pre>
               </div>
