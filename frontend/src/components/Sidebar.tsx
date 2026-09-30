@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 import {
   LayoutDashboard,
@@ -10,8 +10,6 @@ import {
   FileText,
   Activity,
   Settings,
-  Layers,
-  Sparkles,
   ShieldCheck
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
@@ -32,45 +30,49 @@ export const Sidebar: React.FC = () => {
   ];
 
   return (
-    <aside className="w-64 border-r border-slate-800/80 bg-slate-950/90 flex flex-col justify-between h-screen sticky top-0 backdrop-blur-xl z-30 select-none">
+    <aside className="w-64 border-r border-edge bg-bg-2 flex flex-col justify-between h-screen sticky top-0 z-30 select-none">
       <div>
         {/* Brand Header */}
-        <div className="h-16 flex items-center px-6 border-b border-slate-800/80 gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20 text-white font-bold">
-            <Layers className="w-5 h-5 text-white" />
+        <div className="h-16 flex items-center px-5 border-b border-edge gap-2.5">
+          <div className="w-8 h-8 rounded-md bg-accent flex items-center justify-center text-accent-fg">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="12 2 2 7 12 12 22 7 12 2" />
+              <polyline points="2 17 12 22 22 17" />
+              <polyline points="2 12 12 17 22 12" />
+            </svg>
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className="font-extrabold text-base tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
+              <span className="font-semibold text-sm tracking-tight text-fg">
                 CodeV
               </span>
-              <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
+              <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-accent-soft text-accent border border-accent-soft-edge">
                 AI
               </span>
             </div>
-            <p className="text-[11px] text-slate-400 font-medium">Engineering Memory</p>
+            <p className="text-[11px] text-fg-subtle">Engineering Memory</p>
           </div>
         </div>
 
         {/* Selected Repo Banner */}
-        <div className="px-4 py-3 border-b border-slate-800/60 bg-slate-900/30">
-          <div className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1 flex items-center justify-between">
-            <span>Target Repo</span>
+        <div className="px-4 py-3 border-b border-edge">
+          <div className="text-[11px] font-medium text-fg-subtle mb-1.5 flex items-center justify-between">
+            <span>Target repo</span>
             {selectedRepo?.indexing_status === 'completed' && (
-              <span className="flex items-center gap-1 text-[10px] text-emerald-400">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span className="flex items-center gap-1 text-[10px] text-success">
+                <span className="w-1.5 h-1.5 rounded-full bg-success"></span>
                 Indexed
               </span>
             )}
           </div>
-          <div className="flex items-center gap-2 text-xs font-mono text-slate-200 bg-slate-900/80 px-2.5 py-1.5 rounded-lg border border-slate-800 truncate">
-            <GitBranch className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+          <div className="flex items-center gap-2 text-xs font-mono text-fg bg-surface px-2.5 py-1.5 rounded-md border border-edge truncate">
+            <GitBranch className="w-3.5 h-3.5 text-accent shrink-0" />
             <span className="truncate">{selectedRepo ? selectedRepo.name : 'No repo selected'}</span>
           </div>
         </div>
 
         {/* Navigation Links */}
-        <nav className="p-3 space-y-1">
+        <nav className="p-2.5 space-y-0.5">
           {navItems.map((item) => {
             const Icon = item.icon;
             return (
@@ -79,19 +81,19 @@ export const Sidebar: React.FC = () => {
                 to={item.to}
                 end={item.to === '/'}
                 className={({ isActive }) =>
-                  `flex items-center justify-between px-3.5 py-2.5 rounded-lg text-xs font-medium transition-all duration-150 ${
+                  `flex items-center justify-between px-3 py-2 rounded-md text-[13px] font-medium transition-colors duration-150 ${
                     isActive
-                      ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 shadow-sm shadow-cyan-500/10'
-                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60 border border-transparent'
+                      ? 'bg-accent-soft text-accent'
+                      : 'text-fg-muted hover:text-fg hover:bg-surface'
                   }`
                 }
               >
-                <div className="flex items-center gap-3">
-                  <Icon className="w-4 h-4 transition-transform group-hover:scale-110" />
+                <div className="flex items-center gap-2.5">
+                  <Icon className="w-4 h-4" />
                   <span>{item.label}</span>
                 </div>
                 {item.badge && (
-                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-800/50">
+                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-bg text-fg-subtle border border-edge">
                     {item.badge}
                   </span>
                 )}
@@ -102,13 +104,13 @@ export const Sidebar: React.FC = () => {
       </div>
 
       {/* Security & Org Footer */}
-      <div className="p-4 border-t border-slate-800/80 bg-slate-950/60">
-        <div className="flex items-center gap-2 text-[11px] text-slate-400 mb-2">
-          <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-          <span>Multi-tenant Isolation</span>
+      <div className="p-4 border-t border-edge">
+        <div className="flex items-center gap-2 text-[11px] text-fg-subtle mb-2">
+          <ShieldCheck className="w-3.5 h-3.5 text-success" />
+          <span>Multi-tenant isolation</span>
         </div>
-        <div className="text-[11px] text-slate-400 truncate">
-          Org: <span className="text-slate-300 font-semibold">{currentOrg?.name || 'Personal'}</span>
+        <div className="text-[11px] text-fg-subtle truncate">
+          Org: <span className="text-fg-muted font-medium">{currentOrg?.name || 'Personal'}</span>
         </div>
       </div>
     </aside>
