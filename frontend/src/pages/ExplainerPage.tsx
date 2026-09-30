@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Code2,
   Sparkles,
@@ -7,8 +7,6 @@ import {
   Check,
   ShieldAlert,
   ListOrdered,
-  ArrowRight,
-  Layers,
   Cpu
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
@@ -79,15 +77,15 @@ export const ExplainerPage: React.FC = () => {
   };
 
   return (
-    <div className="p-8 max-w-7xl mx-auto space-y-8 animate-in fade-in duration-200">
+    <div className="p-8 max-w-7xl mx-auto space-y-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-black text-white tracking-tight flex items-center gap-2">
-            <Code2 className="w-6 h-6 text-cyan-400" />
-            <span>Code Explainer</span>
+          <h1 className="text-xl font-semibold text-fg tracking-tight flex items-center gap-2">
+            <Code2 className="w-5 h-5 text-accent" />
+            <span>Code explainer</span>
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-fg-muted mt-1">
             Deep AST-level decomposition of functions, classes, and logic blocks with edge cases and pitfalls.
           </p>
         </div>
@@ -95,10 +93,10 @@ export const ExplainerPage: React.FC = () => {
         {explanation && (
           <button
             onClick={handleCopy}
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-800 hover:bg-slate-800 text-slate-300 text-xs font-semibold transition-colors"
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-md bg-surface border border-edge hover:border-edge-2 text-fg-muted hover:text-fg text-xs font-semibold transition-colors"
           >
-            {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
-            <span>{copied ? 'Copied Markdown' : 'Copy Explanation'}</span>
+            {copied ? <Check className="w-4 h-4 text-success" /> : <Copy className="w-4 h-4" />}
+            <span>{copied ? 'Copied markdown' : 'Copy explanation'}</span>
           </button>
         )}
       </div>
@@ -107,21 +105,21 @@ export const ExplainerPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Code Selector */}
         <div className="lg:col-span-5 space-y-4">
-          <div className="glass-panel p-5 rounded-2xl border border-slate-800 space-y-4">
-            <h3 className="text-xs font-bold text-slate-200 uppercase tracking-wider flex items-center gap-2">
-              <FileCode className="w-4 h-4 text-cyan-400" />
-              <span>Target File & Code Block</span>
+          <div className="bg-surface p-5 rounded-lg border border-edge space-y-4">
+            <h3 className="text-xs font-semibold text-fg flex items-center gap-2">
+              <FileCode className="w-4 h-4 text-accent" />
+              <span>Target file & code block</span>
             </h3>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-400 mb-1.5">Select File</label>
+              <label className="block text-xs font-medium text-fg-subtle mb-1.5">Select file</label>
               <select
                 value={selectedFilePath}
                 onChange={(e) => {
                   setSelectedFilePath(e.target.value);
                   loadFileSnippet(e.target.value);
                 }}
-                className="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-800 text-slate-200 text-xs font-mono focus:outline-none focus:border-cyan-500"
+                className="w-full px-3 py-2 rounded-md bg-bg border border-edge text-fg text-xs font-mono focus:outline-none focus:border-accent"
               >
                 {files.map((f) => (
                   <option key={f.id} value={f.file_path}>
@@ -133,48 +131,48 @@ export const ExplainerPage: React.FC = () => {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-1.5">Start Line</label>
+                <label className="block text-xs font-medium text-fg-subtle mb-1.5">Start line</label>
                 <input
                   type="number"
                   min={1}
                   value={startLine}
                   onChange={(e) => setStartLine(parseInt(e.target.value) || 1)}
-                  className="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-800 text-slate-200 text-xs font-mono focus:outline-none focus:border-cyan-500"
+                  className="w-full px-3 py-2 rounded-md bg-bg border border-edge text-fg text-xs font-mono focus:outline-none focus:border-accent"
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-1.5">End Line</label>
+                <label className="block text-xs font-medium text-fg-subtle mb-1.5">End line</label>
                 <input
                   type="number"
                   min={1}
                   value={endLine}
                   onChange={(e) => setEndLine(parseInt(e.target.value) || 1)}
-                  className="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-800 text-slate-200 text-xs font-mono focus:outline-none focus:border-cyan-500"
+                  className="w-full px-3 py-2 rounded-md bg-bg border border-edge text-fg text-xs font-mono focus:outline-none focus:border-accent"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-400 mb-1.5">Code Snippet Preview</label>
+              <label className="block text-xs font-medium text-fg-subtle mb-1.5">Code snippet preview</label>
               <textarea
                 rows={12}
                 value={codeSnippet}
                 onChange={(e) => setCodeSnippet(e.target.value)}
-                className="w-full p-3 rounded-lg bg-slate-950 border border-slate-800 text-slate-200 text-xs font-mono leading-relaxed focus:outline-none focus:border-cyan-500 resize-none select-text"
+                className="w-full p-3 rounded-md bg-bg border border-edge text-fg text-xs font-mono leading-relaxed focus:outline-none focus:border-accent resize-none select-text"
               />
             </div>
 
             <button
               onClick={handleExplain}
               disabled={loading || !selectedFilePath}
-              className="w-full py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold text-xs shadow-lg shadow-cyan-500/20 disabled:opacity-50 transition-all flex items-center justify-center gap-2"
+              className="w-full py-2.5 rounded-md bg-accent hover:bg-accent-strong text-accent-fg font-semibold text-xs disabled:opacity-50 transition-colors flex items-center justify-center gap-2"
             >
               {loading ? (
-                <span>Deconstructing AST & Logic...</span>
+                <span>Deconstructing AST & logic…</span>
               ) : (
                 <>
                   <Sparkles className="w-4 h-4" />
-                  <span>Explain Code Block</span>
+                  <span>Explain code block</span>
                 </>
               )}
             </button>
@@ -184,48 +182,48 @@ export const ExplainerPage: React.FC = () => {
         {/* Right Column: Structured Explanation */}
         <div className="lg:col-span-7">
           {!explanation ? (
-            <div className="h-full glass-panel p-12 rounded-2xl border border-slate-800 flex flex-col items-center justify-center text-center space-y-3">
-              <Cpu className="w-12 h-12 text-slate-600" />
-              <h3 className="text-base font-bold text-white">Select Code & Click Explain</h3>
-              <p className="text-xs text-slate-400 max-w-sm">
+            <div className="h-full bg-surface p-12 rounded-lg border border-edge flex flex-col items-center justify-center text-center space-y-3">
+              <Cpu className="w-10 h-10 text-fg-subtle" />
+              <h3 className="text-sm font-semibold text-fg">Select code & click explain</h3>
+              <p className="text-xs text-fg-muted max-w-sm">
                 CodeV will parse inputs, return types, dependencies, execution logic, edge cases, and security considerations.
               </p>
             </div>
           ) : (
-            <div className="glass-panel p-6 rounded-2xl border border-slate-800 space-y-6">
+            <div className="bg-surface p-6 rounded-lg border border-edge space-y-6">
               {/* Summary */}
               <div>
-                <span className="text-[11px] font-bold text-cyan-400 uppercase tracking-wider">Overview</span>
-                <h3 className="text-sm font-bold text-white mt-1">{explanation.summary}</h3>
-                <p className="text-xs text-slate-400 font-mono mt-0.5">{explanation.file_path}</p>
+                <span className="text-[11px] font-semibold text-accent">Overview</span>
+                <h3 className="text-sm font-semibold text-fg mt-1">{explanation.summary}</h3>
+                <p className="text-xs text-fg-subtle font-mono mt-0.5">{explanation.file_path}</p>
               </div>
 
               {/* Inputs & Outputs Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-slate-950/80 p-4 rounded-xl border border-slate-800/80">
-                  <h4 className="text-xs font-bold text-slate-200 mb-2 flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-cyan-400" />
-                    <span>Inputs & Parameters</span>
+                <div className="bg-bg-2 p-4 rounded-md border border-edge">
+                  <h4 className="text-xs font-semibold text-fg mb-2 flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                    <span>Inputs & parameters</span>
                   </h4>
-                  <ul className="space-y-1.5 text-xs text-slate-300">
+                  <ul className="space-y-1.5 text-xs text-fg-muted">
                     {explanation.inputs.map((inp, idx) => (
                       <li key={idx} className="flex items-start gap-1.5">
-                        <span className="text-cyan-400 font-mono">›</span>
+                        <span className="text-accent font-mono">›</span>
                         <span>{inp}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                <div className="bg-slate-950/80 p-4 rounded-xl border border-slate-800/80">
-                  <h4 className="text-xs font-bold text-slate-200 mb-2 flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                    <span>Outputs & Return Types</span>
+                <div className="bg-bg-2 p-4 rounded-md border border-edge">
+                  <h4 className="text-xs font-semibold text-fg mb-2 flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-success" />
+                    <span>Outputs & return types</span>
                   </h4>
-                  <ul className="space-y-1.5 text-xs text-slate-300">
+                  <ul className="space-y-1.5 text-xs text-fg-muted">
                     {explanation.outputs.map((out, idx) => (
                       <li key={idx} className="flex items-start gap-1.5">
-                        <span className="text-emerald-400 font-mono">›</span>
+                        <span className="text-success font-mono">›</span>
                         <span>{out}</span>
                       </li>
                     ))}
@@ -234,15 +232,15 @@ export const ExplainerPage: React.FC = () => {
               </div>
 
               {/* Execution Logic */}
-              <div className="bg-slate-950/80 p-4 rounded-xl border border-slate-800/80">
-                <h4 className="text-xs font-bold text-slate-200 mb-2 flex items-center gap-1.5">
-                  <ListOrdered className="w-4 h-4 text-indigo-400" />
-                  <span>Important Logic & Execution Flow</span>
+              <div className="bg-bg-2 p-4 rounded-md border border-edge">
+                <h4 className="text-xs font-semibold text-fg mb-2 flex items-center gap-1.5">
+                  <ListOrdered className="w-4 h-4 text-accent" />
+                  <span>Important logic & execution flow</span>
                 </h4>
-                <div className="space-y-2 text-xs text-slate-300">
+                <div className="space-y-2 text-xs text-fg-muted">
                   {explanation.important_logic.map((step, idx) => (
                     <div key={idx} className="flex items-start gap-2">
-                      <span className="w-5 h-5 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-[10px] font-mono text-cyan-400 shrink-0 mt-0.5">
+                      <span className="w-5 h-5 rounded-full bg-surface border border-edge flex items-center justify-center text-[10px] font-mono text-accent shrink-0 mt-0.5">
                         {idx + 1}
                       </span>
                       <p className="leading-relaxed">{step}</p>
@@ -253,30 +251,30 @@ export const ExplainerPage: React.FC = () => {
 
               {/* Edge Cases & Potential Issues */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-slate-950/80 p-4 rounded-xl border border-slate-800/80">
-                  <h4 className="text-xs font-bold text-amber-400 mb-2 flex items-center gap-1.5">
-                    <ShieldAlert className="w-4 h-4 text-amber-400" />
-                    <span>Edge Cases</span>
+                <div className="bg-bg-2 p-4 rounded-md border border-edge">
+                  <h4 className="text-xs font-semibold text-warning mb-2 flex items-center gap-1.5">
+                    <ShieldAlert className="w-4 h-4" />
+                    <span>Edge cases</span>
                   </h4>
-                  <ul className="space-y-1.5 text-xs text-slate-300">
+                  <ul className="space-y-1.5 text-xs text-fg-muted">
                     {explanation.edge_cases.map((ec, idx) => (
                       <li key={idx} className="flex items-start gap-1.5">
-                        <span className="text-amber-400">⚠</span>
+                        <span className="text-warning">⚠</span>
                         <span>{ec}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                <div className="bg-slate-950/80 p-4 rounded-xl border border-slate-800/80">
-                  <h4 className="text-xs font-bold text-rose-400 mb-2 flex items-center gap-1.5">
-                    <ShieldAlert className="w-4 h-4 text-rose-400" />
-                    <span>Potential Issues & Pitfalls</span>
+                <div className="bg-bg-2 p-4 rounded-md border border-edge">
+                  <h4 className="text-xs font-semibold text-danger mb-2 flex items-center gap-1.5">
+                    <ShieldAlert className="w-4 h-4" />
+                    <span>Potential issues & pitfalls</span>
                   </h4>
-                  <ul className="space-y-1.5 text-xs text-slate-300">
+                  <ul className="space-y-1.5 text-xs text-fg-muted">
                     {explanation.potential_issues.map((issue, idx) => (
                       <li key={idx} className="flex items-start gap-1.5">
-                        <span className="text-rose-400">✕</span>
+                        <span className="text-danger">✕</span>
                         <span>{issue}</span>
                       </li>
                     ))}
