@@ -29,13 +29,23 @@ export const SettingsPage: React.FC = () => {
     }
   }, [currentOrg]);
 
+  const isValidEmail = (emailStr: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailStr.trim());
+  };
+
   const handleInviteMember = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!inviteEmail.trim()) return;
+    const cleanEmail = inviteEmail.trim();
+    if (!cleanEmail) return;
+
+    if (!isValidEmail(cleanEmail)) {
+      alert('Please enter a valid email address (e.g. colleague@company.com).');
+      return;
+    }
 
     try {
       const newMember = await api.addOrgMember({
-        email: inviteEmail.trim(),
+        email: cleanEmail,
         role: inviteRole,
       });
       setMembers(prev => [...prev, newMember]);
@@ -52,7 +62,7 @@ export const SettingsPage: React.FC = () => {
   };
 
   return (
-    <div className="p-8 max-w-5xl mx-auto space-y-8">
+    <div className="p-4 sm:p-6 md:p-8 max-w-5xl mx-auto space-y-6 sm:space-y-8">
       {/* Header */}
       <div>
         <h1 className="text-xl font-semibold text-fg tracking-tight flex items-center gap-2">
@@ -116,7 +126,7 @@ export const SettingsPage: React.FC = () => {
           </select>
           <button
             type="submit"
-            disabled={!inviteEmail.trim()}
+            disabled={!inviteEmail.trim() || !isValidEmail(inviteEmail)}
             className="px-4 py-2 rounded-md bg-accent hover:bg-accent-strong text-accent-fg font-semibold text-xs disabled:opacity-40 transition-colors flex items-center justify-center gap-1.5 shrink-0"
           >
             <Plus className="w-4 h-4" />

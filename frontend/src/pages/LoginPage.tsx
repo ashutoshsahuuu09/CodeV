@@ -16,21 +16,31 @@ export const LoginPage: React.FC = () => {
   const { login, register } = useAuth();
   const navigate = useNavigate();
 
+  const isValidEmail = (emailStr: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailStr.trim());
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+
+    if (!isValidEmail(email)) {
+      setError('Please enter a valid email address (e.g., name@company.com).');
+      return;
+    }
+
     setSubmitting(true);
 
     try {
       if (isRegister) {
         await register({
-          email,
+          email: email.trim(),
           password,
           full_name: fullName,
           organization_name: orgName || undefined,
         });
       } else {
-        await login(email, password);
+        await login(email.trim(), password);
       }
       navigate('/');
     } catch (err: any) {
@@ -70,9 +80,9 @@ export const LoginPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-bg flex flex-col justify-center items-center p-4">
       {/* Brand */}
-      <div className="text-center mb-8">
-        <div className="inline-flex items-center justify-center mb-4 rounded-lg bg-surface border border-edge p-3 shadow-sm">
-          <LogoMark size={52} />
+      <div className="text-center mb-8 max-w-full">
+        <div className="inline-flex items-center justify-center mb-4 rounded-lg bg-surface border border-edge p-3 shadow-sm max-w-[calc(100vw-4rem)]">
+          <LogoMark size={52} className="w-9 sm:w-11 md:w-12 lg:w-[52px]" />
         </div>
         <h1 className="text-2xl font-semibold text-fg tracking-tight">
           CodeV <span className="text-accent">AI</span>

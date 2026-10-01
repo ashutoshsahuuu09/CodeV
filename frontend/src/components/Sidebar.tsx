@@ -10,12 +10,18 @@ import {
   FileText,
   Activity,
   Settings,
-  ShieldCheck
+  ShieldCheck,
+  X
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { LogoMark } from './LogoMark';
 
-export const Sidebar: React.FC = () => {
+interface SidebarProps {
+  mobileOpen?: boolean;
+  setMobileOpen?: (open: boolean) => void;
+}
+
+export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, setMobileOpen }) => {
   const { selectedRepo, currentOrg } = useAuth();
 
   const navItems = [
@@ -30,25 +36,42 @@ export const Sidebar: React.FC = () => {
     { to: '/settings', label: 'Settings', icon: Settings },
   ];
 
-  return (
-    <aside className="w-64 border-r border-edge bg-bg-2 flex flex-col justify-between h-screen sticky top-0 z-30 select-none">
+  const handleNavClick = () => {
+    if (setMobileOpen) {
+      setMobileOpen(false);
+    }
+  };
+
+  const renderContent = (isMobile: boolean = false) => (
+    <div className="flex flex-col justify-between h-full select-none">
       <div>
         {/* Brand Header */}
-        <div className="h-16 flex items-center px-5 border-b border-edge gap-2.5">
-          <div className="flex items-center justify-center">
-            <LogoMark size={42} className="drop-shadow-[0_0_12px_rgba(255,255,255,0.08)]" />
-          </div>
-          <div>
-            <div className="flex items-center gap-1.5">
-              <span className="font-semibold text-sm tracking-tight text-fg">
-                CodeV
-              </span>
-              <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-accent-soft text-accent border border-accent-soft-edge">
-                AI
-              </span>
+        <div className="h-16 flex items-center justify-between px-5 border-b border-edge overflow-hidden">
+          <div className="flex items-center gap-2.5">
+            <div className="flex items-center justify-center min-w-0">
+              <LogoMark size={42} className="drop-shadow-[0_0_12px_rgba(255,255,255,0.08)] w-7 sm:w-8 md:w-9 lg:w-10" />
             </div>
-            <p className="text-[11px] text-fg-subtle">Engineering Memory</p>
+            <div>
+              <div className="flex items-center gap-1.5">
+                <span className="font-semibold text-sm tracking-tight text-fg">
+                  CodeV
+                </span>
+                <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-accent-soft text-accent border border-accent-soft-edge">
+                  AI
+                </span>
+              </div>
+              <p className="text-[11px] text-fg-subtle">Engineering Memory</p>
+            </div>
           </div>
+          {isMobile && (
+            <button
+              onClick={() => setMobileOpen?.(false)}
+              className="p-1.5 rounded-md hover:bg-surface text-fg-muted hover:text-fg transition-colors"
+              aria-label="Close menu"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          )}
         </div>
 
         {/* Selected Repo Banner */}
@@ -77,6 +100,7 @@ export const Sidebar: React.FC = () => {
                 key={item.to}
                 to={item.to}
                 end={item.to === '/'}
+                onClick={handleNavClick}
                 className={({ isActive }) =>
                   `flex items-center justify-between px-3 py-2 rounded-md text-[13px] font-medium transition-colors duration-150 ${
                     isActive
@@ -110,6 +134,31 @@ export const Sidebar: React.FC = () => {
           Org: <span className="text-fg-muted font-medium">{currentOrg?.name || 'Personal'}</span>
         </div>
       </div>
-    </aside>
+    </div>
+  );
+
+  return (
+    <>
+      {/* Desktop Sidebar (hidden on mobile, visible on md and up) */}
+      <aside className="hidden md:flex w-64 border-r border-edge bg-bg-2 flex-col justify-between h-screen sticky top-0 z-30 select-none shrink-0">
+        {renderContent(false)}
+      </aside>
+
+      {/* Mobile Slide-over Drawer */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-50 md:hidden flex">
+          {/* Backdrop overlay */}
+          <div
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
+            onClick={() => setMobileOpen?.(false)}
+          />
+
+          {/* Drawer Content */}
+          <div className="relative w-72 max-w-[80vw] bg-bg-2 border-r border-edge h-full z-50 flex flex-col shadow-2xl">
+            {renderContent(true)}
+          </div>
+        </div>
+      )}
+    </>
   );
 };

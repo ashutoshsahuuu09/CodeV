@@ -76,46 +76,47 @@ export const CodeViewerModal: React.FC<CodeViewerModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6 bg-black/50">
       <div className="w-full max-w-5xl h-[85vh] bg-surface border border-edge rounded-lg shadow-xl flex flex-col overflow-hidden">
         {/* Top bar */}
-        <div className="h-14 px-6 border-b border-edge bg-bg-2 flex items-center justify-between shrink-0">
-          <div className="flex items-center gap-3">
-            <div className="w-7 h-7 rounded-md bg-accent-soft border border-accent-soft-edge flex items-center justify-center text-accent">
+        <div className="h-14 px-3 sm:px-6 border-b border-edge bg-bg-2 flex items-center justify-between shrink-0 gap-2 overflow-hidden">
+          <div className="flex items-center gap-2 min-w-0 truncate">
+            <div className="w-7 h-7 rounded-md bg-accent-soft border border-accent-soft-edge flex items-center justify-center text-accent shrink-0">
               <FileCode className="w-4 h-4" />
             </div>
-            <div className="flex items-center gap-2">
-              <span className="font-mono text-sm font-medium text-fg">{filePath}</span>
+            <div className="flex items-center gap-1.5 sm:gap-2 min-w-0 truncate">
+              <span className="font-mono text-xs sm:text-sm font-medium text-fg truncate">{filePath}</span>
               {startLine && endLine && (
-                <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-mark-soft text-mark-fg">
-                  Lines {startLine}–{endLine}
+                <span className="text-[10px] sm:text-xs font-mono px-2 py-0.5 rounded-full bg-mark-soft text-mark-fg shrink-0">
+                  L{startLine}–{endLine}
                 </span>
               )}
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             {onExplain && (
               <button
                 onClick={() => {
                   onExplain(filePath, startLine, endLine, getTargetSnippet());
                   onClose();
                 }}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-accent text-accent-fg hover:bg-accent-strong text-xs font-semibold transition-colors"
+                className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-md bg-accent text-accent-fg hover:bg-accent-strong text-xs font-semibold transition-colors"
               >
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>Explain code</span>
+                <span className="hidden sm:inline">Explain code</span>
+                <span className="sm:hidden">Explain</span>
               </button>
             )}
 
             <button
               onClick={handleCopy}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-surface-2 hover:bg-bg-2 border border-edge text-fg-muted text-xs font-medium transition-colors"
+              className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-md bg-surface-2 hover:bg-bg-2 border border-edge text-fg-muted text-xs font-medium transition-colors"
             >
               {copied ? <Check className="w-3.5 h-3.5 text-success" /> : <Copy className="w-3.5 h-3.5" />}
-              <span>{copied ? 'Copied' : 'Copy'}</span>
+              <span className="hidden sm:inline">{copied ? 'Copied' : 'Copy'}</span>
             </button>
 
             <button
               onClick={onClose}
-              className="p-1.5 rounded-md hover:bg-surface-2 text-fg-subtle hover:text-fg transition-colors ml-2"
+              className="p-1.5 rounded-md hover:bg-surface-2 text-fg-subtle hover:text-fg transition-colors ml-1"
               aria-label="Close"
             >
               <X className="w-5 h-5" />

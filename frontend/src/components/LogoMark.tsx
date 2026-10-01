@@ -11,7 +11,9 @@ export const LogoMark: React.FC<LogoMarkProps> = ({ className = '', size = 32 })
       viewBox="0 0 240 170"
       width={size}
       height={size * (170 / 240)}
-      className={className}
+      className={`${className} block max-w-full h-auto shrink-0`}
+      style={{ maxHeight: '100%' }}
+      preserveAspectRatio="xMidYMid meet"
       role="img"
       aria-label="CodeV logo"
       xmlns="http://www.w3.org/2000/svg"

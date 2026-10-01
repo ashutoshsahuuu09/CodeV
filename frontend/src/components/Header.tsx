@@ -7,13 +7,19 @@ import {
   User as UserIcon,
   Search,
   Sun,
-  Moon
+  Moon,
+  Menu
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { useNavigate } from 'react-router-dom';
 
-export const Header: React.FC = () => {
+interface HeaderProps {
+  mobileOpen?: boolean;
+  setMobileOpen?: (open: boolean) => void;
+}
+
+export const Header: React.FC<HeaderProps> = ({ mobileOpen, setMobileOpen }) => {
   const { user, currentOrg, organizations, switchOrganization, repositories, selectedRepo, setSelectedRepo, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const [showOrgDropdown, setShowOrgDropdown] = useState(false);
@@ -22,19 +28,28 @@ export const Header: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <header className="h-16 border-b border-edge bg-bg-2 px-6 flex items-center justify-between sticky top-0 z-20">
-      {/* Left: Global Repo Selector */}
-      <div className="flex items-center gap-4">
-        <div className="relative">
+    <header className="h-16 border-b border-edge bg-bg-2 px-3 sm:px-6 flex items-center justify-between sticky top-0 z-20 gap-2">
+      {/* Left: Mobile Toggle & Global Repo Selector */}
+      <div className="flex items-center gap-2 sm:gap-4 min-w-0">
+        {/* Mobile Hamburger Button */}
+        <button
+          onClick={() => setMobileOpen?.(!mobileOpen)}
+          className="md:hidden p-2 rounded-md bg-surface border border-edge text-fg-muted hover:text-fg transition-colors shrink-0"
+          aria-label="Toggle navigation drawer"
+        >
+          <Menu className="w-4 h-4" />
+        </button>
+
+        <div className="relative min-w-0">
           <button
             onClick={() => setShowRepoDropdown(!showRepoDropdown)}
-            className="flex items-center gap-2.5 px-3 py-1.5 rounded-md bg-surface border border-edge hover:border-edge-2 text-xs font-medium text-fg transition-colors"
+            className="flex items-center gap-1.5 sm:gap-2.5 px-2.5 sm:px-3 py-1.5 rounded-md bg-surface border border-edge hover:border-edge-2 text-xs font-medium text-fg transition-colors max-w-full"
           >
-            <GitBranch className="w-3.5 h-3.5 text-accent" />
-            <span className="max-w-[200px] truncate">
+            <GitBranch className="w-3.5 h-3.5 text-accent shrink-0" />
+            <span className="max-w-[110px] sm:max-w-[200px] truncate">
               {selectedRepo ? selectedRepo.full_name : 'Select repository…'}
             </span>
-            <ChevronDown className="w-3.5 h-3.5 text-fg-subtle" />
+            <ChevronDown className="w-3.5 h-3.5 text-fg-subtle shrink-0" />
           </button>
 
           {showRepoDropdown && (

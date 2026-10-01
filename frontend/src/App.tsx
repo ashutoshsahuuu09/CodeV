@@ -17,6 +17,7 @@ import { SettingsPage } from './pages/SettingsPage';
 
 const ProtectedLayout: React.FC = () => {
   const { user, loading } = useAuth();
+  const [mobileOpen, setMobileOpen] = React.useState(false);
 
   if (loading) {
     return (
@@ -32,10 +33,10 @@ const ProtectedLayout: React.FC = () => {
   }
 
   return (
-    <div className="flex min-h-screen bg-bg text-fg">
-      <Sidebar />
+    <div className="flex min-h-screen bg-bg text-fg overflow-x-hidden">
+      <Sidebar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
       <div className="flex-1 flex flex-col min-w-0">
-        <Header />
+        <Header mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
         <main className="flex-1 overflow-auto">
           <Routes>
             <Route path="/" element={<DashboardPage />} />
