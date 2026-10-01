@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Shield, Zap, Sparkles } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { LogoMark } from '../components/LogoMark';
 
 export const LoginPage: React.FC = () => {
   const [isRegister, setIsRegister] = useState(false);
@@ -70,12 +71,8 @@ export const LoginPage: React.FC = () => {
     <div className="min-h-screen bg-bg flex flex-col justify-center items-center p-4">
       {/* Brand */}
       <div className="text-center mb-8">
-        <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-accent mb-4 text-accent-fg">
-          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polygon points="12 2 2 7 12 12 22 7 12 2" />
-            <polyline points="2 17 12 22 22 17" />
-            <polyline points="2 12 12 17 22 12" />
-          </svg>
+        <div className="inline-flex items-center justify-center mb-4 rounded-lg bg-surface border border-edge p-3 shadow-sm">
+          <LogoMark size={52} />
         </div>
         <h1 className="text-2xl font-semibold text-fg tracking-tight">
           CodeV <span className="text-accent">AI</span>

@@ -13,6 +13,7 @@ import {
   ShieldCheck
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { LogoMark } from './LogoMark';
 
 export const Sidebar: React.FC = () => {
   const { selectedRepo, currentOrg } = useAuth();
@@ -34,12 +35,8 @@ export const Sidebar: React.FC = () => {
       <div>
         {/* Brand Header */}
         <div className="h-16 flex items-center px-5 border-b border-edge gap-2.5">
-          <div className="w-8 h-8 rounded-md bg-accent flex items-center justify-center text-accent-fg">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polygon points="12 2 2 7 12 12 22 7 12 2" />
-              <polyline points="2 17 12 22 22 17" />
-              <polyline points="2 12 12 17 22 12" />
-            </svg>
+          <div className="flex items-center justify-center">
+            <LogoMark size={42} className="drop-shadow-[0_0_12px_rgba(255,255,255,0.08)]" />
           </div>
           <div>
             <div className="flex items-center gap-1.5">
